@@ -2,7 +2,7 @@ const db = require ('../database/connection')
 
 module.exports = {
     //lista usuarios
-    async listAllUsers(req,res){
+    async listAllUser(req,res){
         try {
             const users = await db.select().from('users');
             return res.json(users)
@@ -45,7 +45,7 @@ module.exports = {
 
     },
     //delete users
-    async deleteUsers (req, res){
+    async deleteUser (req, res){
         const { regis_users } = req.body
         
         await db('users')
@@ -55,7 +55,7 @@ module.exports = {
         return res.status(204).send()
     },
     //update users
-    async updateUsers (req, res){
+    async updateUser (req, res){
         try {
             const {
                 regis_users, 

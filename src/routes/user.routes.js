@@ -4,8 +4,8 @@ const routes = express.Router()
 const userController = require ('../controllers/user.controller')
 
 routes.post('', userController.createUser)
-routes.get('', userController.listAllUsers)
-routes.delete('', userController.deleteUsers)
-routes.put('', userController.updateUsers)
+routes.get('', userController.listAllUser)
+routes.delete('', userController.deleteUser)
+routes.put('', userController.updateUser)
 
 module.exports = routes
