@@ -1,0 +1,39 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Sitema de Resgistro de Ações",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node server.js",
+    "test": "jest",
+    "migrate": "knex migrate:latest",
+    "rollback": "knex migrate:rollback",
+    "seedrun": "knex seed:run ",
+    "seeddown": "knex seed:down"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edubritos/sra.git"
+  },
+  "author": "Eduardo Silva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edubritos/sra/issues"
+  },
+  "homepage": "https://github.com/edubritos/sra#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-promise-router": "^3.0.3",
+    "knex": "^0.21.1",
+    "knex-migrate": "^1.7.4",
+    "pg": "^8.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.0.0",
+    "jest": "^26.0.1",
+    "nodemon": "^2.0.4"
+  }
+}
