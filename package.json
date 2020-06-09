@@ -10,7 +10,8 @@
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
     "seedrun": "knex seed:run ",
-    "seeddown": "knex seed:down"
+    "seeddown": "knex seed:down",
+    "serve": "nodemon --watch \"src/\" -e js --exec \"node -r dotenv/config src/server.js\""
   },
   "repository": {
     "type": "git",
