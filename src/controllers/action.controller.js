@@ -4,6 +4,38 @@ module.exports = {
   //lista ações
   async listAllAction(req, res) {
     const search = req.query.search;
+    const user = req.query.user;
+
+    const { page = 1 } = req.query;
+
+    const [count] = await db("action")
+      .count()
+      .join(
+        "type_action",
+        "type_action.id_type_action",
+        "=",
+        "action.id_type_action"
+      )
+      .leftJoin(
+        "type_trail",
+        "type_trail.id_type_trail",
+        "=",
+        "action.id_type_trail"
+      )
+      .leftJoin("users", "users.id_user", "=", "action.id_user")
+      .where((qb) => {
+        if (user) {
+          qb.where("action.id_user", "=", user);
+        } else {
+          if (search) {
+            qb.orWhere("type_trail.description", "ilike", `%${search}%`);
+            qb.orWhere("type_action.description", "ilike", `%${search}%`);
+            qb.orWhere("users.nome_user", "ilike", `%${search}%`);
+            qb.orWhere("action.area_location", "ilike", `%${search}%`);
+            qb.orWhere("action.sector_location", "ilike", `%${search}%`);
+          }
+        }
+      });
 
     const action = await db
       .select([
@@ -26,15 +58,23 @@ module.exports = {
         "action.id_type_trail"
       )
       .leftJoin("users", "users.id_user", "=", "action.id_user")
+      .limit(5)
+      .offset((page - 1) * 5)
       .where((qb) => {
-        if (search) {
-          qb.orWhere("type_trail.description", "ilike", `%${search}%`);
-          qb.orWhere("type_action.description", "ilike", `%${search}%`);
-          qb.orWhere("users.nome_user", "ilike", `%${search}%`);
-          qb.orWhere("action.area_location", "ilike", `%${search}%`);
-          qb.orWhere("action.sector_location", "ilike", `%${search}%`);
+        if (user) {
+          qb.where("action.id_user", "=", user);
+        } else {
+          if (search) {
+            qb.orWhere("type_trail.description", "ilike", `%${search}%`);
+            qb.orWhere("type_action.description", "ilike", `%${search}%`);
+            qb.orWhere("users.nome_user", "ilike", `%${search}%`);
+            qb.orWhere("action.area_location", "ilike", `%${search}%`);
+            qb.orWhere("action.sector_location", "ilike", `%${search}%`);
+          }
         }
       });
+
+    res.header("X-Total-Count", count["count"]);
 
     return res.json(action);
   },

@@ -7,7 +7,8 @@ module.exports = {
 
     const users = await db
       .select(["users.*", "team.name_team"])
-      .count("action.id_user").as("amount_regis")
+      .count("action.id_user")
+      .as("amount_regis")
       .from("users")
       .join("team", "team.id_team", "=", "users.id_team")
       .leftJoin("action", "action.id_user", "=", "users.id_user")
@@ -21,6 +22,21 @@ module.exports = {
           qb.orWhere("team.name_team", "ilike", `%${search}%`);
         }
       });
+
+    return res.json(users);
+  },
+  async getUser(req, res) {
+    const id_user = req.params.id;
+
+    const users = await db
+      .select(["users.*", "team.name_team"])
+      .count("action.id_user")
+      .as("amount_regis")
+      .from("users")
+      .join("team", "team.id_team", "=", "users.id_team")
+      .leftJoin("action", "action.id_user", "=", "users.id_user")
+      .groupBy(["users.id_user", "team.name_team"])
+      .where("users.id_user", "=", id_user);
 
     return res.json(users);
   },
